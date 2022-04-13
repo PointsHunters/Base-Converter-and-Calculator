@@ -47,9 +47,9 @@ bool check_number(string str, int base, bool state)
 int app(){
     Base nr1, nr2;
     string text;
-    cout<<"Type a command: "<<endl;
-    //cin>>text;
-    text = "converter";
+    cout<<"Type a command: ";
+    cin>>text;
+    // text = "converter";
     if(text == "help"){
         help();
     }else if(text == "converter"){
@@ -67,90 +67,15 @@ int app(){
 }
 
 int get_36(char nr){
-    switch(nr) {
-        case 'A':
-            return 10;
-            break;
-        case 'B':
-            return 11;
-            break;
-        case 'C':
-            return 12;
-            break;
-        case 'D':
-            return 13;
-            break;
-        case 'E':
-            return 14;
-            break;
-        case 'F':
-            return 15;
-            break;
-        case 'G':
-            return 16;
-            break;
-        case 'H':
-            return 17;
-            break;
-        case 'I':
-            return 18;
-            break;
-        case 'J':
-            return 19;
-            break;
-        case 'K':
-            return 20;
-            break;
-        case 'L':
-            return 21;
-            break;
-        case 'M':
-            return 22;
-            break;
-        case 'N':
-            return 23;
-            break;
-        case 'O':
-            return 24;
-            break;
-        case 'P':
-            return 25;
-            break;
-        case 'Q':
-            return 26;
-            break;
-        case 'R':
-            return 27;
-            break;
-        case 'S':
-            return 28;
-            break;
-        case 'T':
-            return 39;
-            break;
-        case 'U':
-            return 30;
-            break;
-        case 'V':
-            return 31;
-            break;
-        case 'W':
-            return 32;
-            break;
-        case 'X':
-            return 33;
-            break;
-        case 'Y':
-            return 34;
-            break;
-        case 'Z':
-            return 35;
-            break;
-        default:
-            int x = nr;
-            return x - 48;
-            break;
-    }
+    int i=0;
+    do{
+        if(nr == char(65+i)){
+            return i+10;
+        }
+        i++;
+    }while(i+10 != 36);
+    int x = nr;
+    return x - 48;
 }
 
 void Base::read_base(string message, int number){
@@ -219,88 +144,18 @@ string divide(int nr, int base){
     }
     for(int j=h-1;j>=0;j--){
         if(base>10){
-            switch(v[j]) {
-                case 10:
-                    text.append("A");
+            int i=0,cont=0;
+            do{
+                if(v[j] == i+10){
+                    text += char(65+i);
+                    cont = 1;
+                    i++;
                     break;
-                case 11:
-                    text.append("B");
-                    break;
-                case 12:
-                    text.append("C");
-                    break;
-                case 13:
-                    text.append("D");
-                    break;
-                case 14:
-                    text.append("E");
-                    break;
-                case 15:
-                    text.append("F");
-                    break;
-                case 16:
-                    text.append("G");
-                    break;
-                case 17:
-                    text.append("H");
-                    break;
-                case 18:
-                    text.append("I");
-                    break;
-                case 19:
-                    text.append("J");
-                    break;
-                case 20:
-                    text.append("K");
-                    break;
-                case 21:
-                    text.append("L");
-                    break;
-                case 22:
-                    text.append("M");
-                    break;
-                case 23:
-                    text.append("N");
-                    break;
-                case 24:
-                    text.append("O");
-                    break;
-                case 25:
-                    text.append("P");
-                    break;
-                case 26:
-                    text.append("Q");
-                    break;
-                case 27:
-                    text.append("R");
-                    break;
-                case 28:
-                    text.append("S");
-                    break;
-                case 29:
-                    text.append("T");
-                    break;
-                case 30:
-                    text.append("U");
-                    break;
-                case 31:
-                    text.append("V");
-                    break;
-                case 32:
-                    text.append("W");
-                    break;
-                case 33:
-                    text.append("X");
-                    break;
-                case 34:
-                    text.append("Y");
-                    break;
-                case 35:
-                    text.append("Z");
-                    break;
-                default:
-                    text.append(to_string(v[j]));
-                    break;
+                }
+                i++;
+            }while(i+10 != 36);
+            if(!cont){
+                text.append(to_string(v[j]));
             }
         }else{
             text.append(to_string(v[j]));
