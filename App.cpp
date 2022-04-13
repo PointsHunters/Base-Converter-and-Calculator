@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <cctype>    //pentru comanda care elimina spatiile din fata 
+#include <algorithm> // ⬆️
 #include <math.h>
 using namespace std;
 int h = 0, v[50];
@@ -17,6 +19,7 @@ class Base
         void converter();
         void calculator();
 };
+
 void help(){
     cout<<endl<<"For more information on a specific command, type 'help_<command_name>'"<<endl<<endl;
     cout<<"converter    Converts a number's base to another base and displays it."<<endl;
@@ -44,36 +47,57 @@ bool check_number(string str, int base, bool state)
     
     return true;
 }
+void introdoction()
+{
+    cout << "\t\t\t**Base Converter and Calculator**\t\t\t" << endl;
+    cout << "\t\t\t           ~COMMANDS~           \t\t\t" << endl;
+    cout << "help" << endl << "converter"<< endl << "calculator"<< endl;
+}
 int app(){
     Base nr1, nr2;
     string text;
+    introdoction();
     cout<<"Type a command: ";
     cin>>text;
     // text = "converter";
-    if(text == "help"){
+    text.erase(remove_if(text.begin(), text.end(), ::isspace), text.end());
+    for_each(text.begin(), text.end(), [](char & c) {
+        c = ::tolower(c);
+    });
+    if (text == "help" || text == "h"){
         help();
-    }else if(text == "converter"){
+    }
+    else if (text == "converter")
+    {
         nr1.converter();
-    }else if(text == "calculator"){
+    }
+    else if (text == "calculator")
+    {
         cout<<endl<<"-calculator"<<endl;
-    }else if(text == "help_converter"){
+    }
+    else if (text == "help_converter")
+    {
         cout<<endl<<"-help converter"<<endl;
-    }else if(text == "help_calculator"){
+    }
+    else if (text == "help_calculator")
+    {
         cout<<endl<<"-help calculator"<<endl;
-    }else{
+    }
+    else
+    {
         cout<<"Unknown command, type 'help' to see more about the program"<<endl<<endl;
     }
     app();
 }
 
 int get_36(char nr){
-    int i=0;
+    int i = 0;
     do{
-        if(nr == char(65+i)){
-            return i+10;
+        if(nr == char(65 + i)){
+            return i + 10;
         }
         i++;
-    }while(i+10 != 36);
+    }while(i + 10 != 36);
     int x = nr;
     return x - 48;
 }
@@ -101,7 +125,7 @@ void Base::read_base(string message, int number){
 void Base::read_nr(){
     cout<<"Insert the number: ";
     cin >> text;
-    if (base_1>10)
+    if (base_1 > 10)
     {
         if(!check_number(text,base_1,false)){
             cout << "The number is incorrect!" << endl << "Please try again" << endl;
@@ -120,7 +144,7 @@ void Base::read_nr(){
 }
 
 int multiply(string text, int base){
-    int k = text.length() - 1, nr=0;
+    int k = text.length() - 1, nr = 0;
     char text_v[50] = {0};
     for (int i = 0; i < text.length(); i++)
     {
