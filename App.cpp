@@ -15,10 +15,12 @@ class Base
         int base_1;
         int base_2;
         void read_base(string message, int number);
-        void read_nr();
-        void converter();
-        void calculator();
-};
+        void read_nr(int state);
+        string converter();
+}nr1, nr2;
+
+
+void app();
 
 void help(){
     cout<<endl<<"For more information on a specific command, type 'help_<command_name>'"<<endl<<endl;
@@ -47,47 +49,19 @@ bool check_number(string str, int base, bool state)
     
     return true;
 }
-void introdoction()
+
+void introduction()
 {
-    cout << "\t\t\t**Base Converter and Calculator**\t\t\t" << endl;
-    cout << "\t\t\t           ~COMMANDS~           \t\t\t" << endl;
-    cout << "help" << endl << "converter"<< endl << "calculator"<< endl;
-}
-int app(){
-    Base nr1, nr2;
-    string text;
-    introdoction();
-    cout<<"Type a command: ";
-    cin>>text;
-    // text = "converter";
-    text.erase(remove_if(text.begin(), text.end(), ::isspace), text.end());
-    for_each(text.begin(), text.end(), [](char & c) {
-        c = ::tolower(c);
-    });
-    if (text == "help" || text == "h"){
-        help();
-    }
-    else if (text == "converter")
-    {
-        nr1.converter();
-    }
-    else if (text == "calculator")
-    {
-        cout<<endl<<"-calculator"<<endl;
-    }
-    else if (text == "help_converter")
-    {
-        cout<<endl<<"-help converter"<<endl;
-    }
-    else if (text == "help_calculator")
-    {
-        cout<<endl<<"-help calculator"<<endl;
-    }
-    else
-    {
-        cout<<"Unknown command, type 'help' to see more about the program"<<endl<<endl;
-    }
-    app();
+    //cout << "\t**Base Converter and Calculator**" << endl <<endl;
+    cout << "888888b.    .d8888b.   .d8888b.      .d8888b.  "<<endl;
+    cout << "888  '88b  d88P  Y88b d88P  '88b    d88P  Y88b "<<endl;
+    cout << "888  .88P  888    888 Y88b. d88P    888    888 "<<endl;
+    cout << "8888888K.  888         'Y8888P'     888        "<<endl;
+    cout << "888  'Y88b 888        .d88P88K.d88P 888        "<<endl;
+    cout << "888    888 888    888 888'  Y888P'  888    888 "<<endl;
+    cout << "888   d88P Y88b  d88P Y88b .d8888b  Y88b  d88P "<<endl;
+    cout << "8888888P'   'Y8888P'   'Y8888P' Y88b 'Y8888P'  "<<endl<<endl;
+    cout << "Type 'help' to see more about the program" << endl <<endl;
 }
 
 int get_36(char nr){
@@ -104,11 +78,7 @@ int get_36(char nr){
 
 void Base::read_base(string message, int number){
     string base_text;
-    if(number == 1){
-        cout<<"Insert base to convert: ";
-    }else if(number==2){
-        cout<<"Insert base to convert to: ";
-    }
+    cout<<message;
     cin >> base_text;
     if (check_number(base_text, 10, true)){
         if(number == 1){
@@ -117,19 +87,21 @@ void Base::read_base(string message, int number){
             base_2 = stoi(base_text);
         }
     }else{
-        cout << "The base is incorrect!" << endl << "Please try again" << endl;
+        cout << "The base is incorrect! It should be a number between 2 and 36." << endl << "Please try again" << endl;
         read_base(message,number);
     }
 }
 
-void Base::read_nr(){
-    cout<<"Insert the number: ";
+void Base::read_nr(int state){
+    if(state == 0) cout<<"Insert the number: ";
+    else if(state == 1) cout<<"Insert number one: ";
+    else if(state == 2) cout<<"Insert number two: ";
     cin >> text;
     if (base_1 > 10)
     {
         if(!check_number(text,base_1,false)){
             cout << "The number is incorrect!" << endl << "Please try again" << endl;
-            read_nr();
+            read_nr(state);
         }
     }
     else
@@ -138,7 +110,7 @@ void Base::read_nr(){
              nr = stoi(text);
          }else{
             cout << "The number is incorrect!" << endl << "Please try again" << endl;
-            read_nr();
+            read_nr(state);
          }
     }
 }
@@ -188,48 +160,134 @@ string divide(int nr, int base){
     return text;
 }
 
-void Base::converter(){
-    read_base("Insert base to convert: ",1);
-    read_base("Insert base to convert to: ",2);
-    read_nr();
-    cout << "Result: ";
+string Base::converter(){
     if (base_1 < 2 || base_1 > 36 || base_2 < 2 || base_2 > 36)
     {
         cout << "At least one number is incorrect for one of the bases" << endl << endl;
         app();
     }else if(base_1 == base_2){
         if(base_1>10){
-            cout << text<<endl;
+            return text;
         }else{
-            cout << nr<<endl;
+            return to_string(nr);
         }
     }
     else if (base_1 > 10)
     {
         if(base_2 == 10){
             nr = multiply(text,base_1);
-            cout << nr << endl;
+            return to_string(nr);
         }else{
             text = divide(multiply(text, base_1), base_2);
-            cout << text << endl;
+            return text;
         }
     }
     else if (base_1 == 10)
     {
         text = divide(nr, base_2);
-        cout << text << endl;
+        return text;
     }else if(base_1<10){
         if(base_2 == 10){
             nr = multiply(text,base_1);
-            cout << nr << endl;
+            return to_string(nr);
         }else{
             text = divide(multiply(text, base_1), base_2);
-            cout << text << endl;
+            return text;
         }
     }
+    return 0;
+}
+
+int calculator(){
+    string op;
+    int nr_1,nr_2;
+    nr_1 = stoi(nr1.converter());
+    nr_2 = stoi(nr2.converter());
+    cout<<"Select the operation (type: +,-,* or /):";
+    cin>>op;
+    if(op == "+")
+        return nr_1+nr_2;
+    else if(op == "-")
+        return nr_1-nr_2;
+    else if(op == "*")
+        return nr_1*nr_2;
+    else if(op == "/")
+        return nr_1/nr_2;
+    else
+        calculator();
+        return 0;
+}
+
+void app(){
+    string text,nr,keep_going;
+    cout<<"Type a command: ";
+    cin>>text;
+    // text = "converter";
+    text.erase(remove_if(text.begin(), text.end(), ::isspace), text.end());
+    for_each(text.begin(), text.end(), [](char & c) {
+        c = ::tolower(c);
+    });
+    if (text == "help" || text == "h"){
+        help();
+    }
+    else if (text == "converter" || text == "convert" || text == "conv")
+    {
+        while(true)
+        {
+            nr1.read_base("Insert base to convert: ",1);
+            nr1.read_base("Insert base to convert to: ",2); nr1.read_nr(0);
+            nr = nr1.converter();
+
+            cout << "Result: "<<nr<<endl<<endl;
+
+            cout <<"Keep going? (y/n): "; cin>>keep_going;
+            keep_going.erase(remove_if(keep_going.begin(), keep_going.end(), ::isspace), keep_going.end());
+            for_each(keep_going.begin(), keep_going.end(), [](char & c) {
+                c = ::tolower(c);
+            });
+            if(keep_going == "0" || keep_going == "n" || keep_going == "no") break;
+        }
+    }
+    else if (text == "calculator" || text == "calculate" || text == "calc")
+    {
+        while(true)
+        {
+            int aux;
+            nr1.read_base("Insert base of the numbers: ",1);
+            nr2.base_1 = nr1.base_1;
+            nr1.base_2 = nr2.base_2 = 10;
+            nr1.read_nr(1);
+            nr2.read_nr(2);
+            nr1.nr = calculator();
+            nr1.base_2 = nr1.base_1;
+            nr1.base_1 = 10;
+            nr = nr1.converter();
+            cout << "Result: "<<nr<<endl<<endl;
+        
+            cout <<"Keep going? (y/n): "; cin>>keep_going;
+            keep_going.erase(remove_if(keep_going.begin(), keep_going.end(), ::isspace), keep_going.end());
+            for_each(keep_going.begin(), keep_going.end(), [](char & c) {
+                c = ::tolower(c);
+            });
+            if(keep_going == "0" || keep_going == "n" || keep_going == "no") break;
+        }
+    }
+    else if (text == "help_converter")
+    {
+        cout<<endl<<"-help converter"<<endl<<endl;
+    }
+    else if (text == "help_calculator")
+    {
+        cout<<endl<<"-help calculator"<<endl<<endl;
+    }
+    else
+    {
+        cout<<"Unknown command, type 'help' to see more about the program"<<endl<<endl;
+    }
+    app();
 }
 
 int main(){
-    cout<<"Type 'help' to see more about the program"<<endl<<endl;
+    introduction();
     app();
 }
