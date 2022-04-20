@@ -36,8 +36,6 @@ void introduction()
     cout << "Type 'help' to see more about the program" << endl <<endl;
 }
 
-void app(); //we declare the app() method here to be able to use it into the other methods
-
 //Provides the user with helpful information about the program.
 void help(){
     cout<<endl<<"Commands of the program:"<<endl<<endl;
@@ -47,6 +45,8 @@ void help(){
     // cout<<"For more information on a specific command, type 'help_<command_name>'"<<endl<<endl;
 }
 
+void app(); //we declare the app() method here to be able to use it into the other methods
+
 //This method is used to convert a (char) number into a (int) number and returns it.
 int get_36(char nr){
     int i = 0;
@@ -55,7 +55,7 @@ int get_36(char nr){
             return i + 10;
         }
         i++;
-    }while(i + 10 != 36);
+    }while(i != 26);
     int x = nr;
     return x - 48;
 }
@@ -148,10 +148,20 @@ string divide(int nr, int base){
         if(base>10){
             int i=0,cont=0;
             do{
-                if(v[j] == i+10){ text += char(65+i); cont = 1; i++; break; } i++;
+                if(v[j] == i+10){
+                    text += char(65+i);
+                    cont = 1;
+                    i++;
+                    break;
+                }
+                i++;
             }while(i != 26);
-            if(!cont){ text.append(to_string(v[j])); }
-        }else{ text.append(to_string(v[j])); }
+            if(!cont){
+                text.append(to_string(v[j]));
+            }
+        }else{
+            text.append(to_string(v[j]));
+        }
     }
     return text;
 }
